@@ -1,0 +1,14 @@
+# virtual envs
+venv
+.venv
+
+# Jupyter notebooks
+.ipynb_checkpoints
+jupyter/migrated
+
+# CI outputs
+dataviz/*.html
+public/
+
+# Python
+*.pyc

@@ -1,0 +1,10 @@
+# fetch
+requests
+beautifulsoup4
+
+# datavis
+notebook==6.5.2
+pandas==1.5.1
+plotly==5.11.0
+matplotlib==3.6.2
+wordcloud==1.8.2.2

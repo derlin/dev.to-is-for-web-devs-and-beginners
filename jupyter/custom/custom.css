@@ -1,0 +1,13 @@
+/**
+For this file to be processed by jupyter, ensure you export JUPYTER_CONFIG_DIR,
+for example:
+```
+JUPYTER_CONFIG_DIR=jupyter jupyter nbconvert --to html
+*/
+
+/** Make jupyter HTML export more responsive. */
+@media (max-width: 600px) { 
+    .jp-InputPrompt.jp-InputArea-prompt, .jp-OutputPrompt.jp-OutputArea-prompt { 
+        display: none !important;
+    }
+}

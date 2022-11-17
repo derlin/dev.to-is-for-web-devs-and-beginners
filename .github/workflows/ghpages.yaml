@@ -1,0 +1,66 @@
+name: Github Pages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+       - 'dataviz/*.ipynb'
+       - '*.json'
+       - '.github/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up python
+        id: setup-python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+      
+      - name: Install requirements
+        run: pip install -r requirements.txt
+      
+      - name: Export notebooks
+        run: JUPYTER_CONFIG_DIR=./jupyter jupyter nbconvert dataviz/*.ipynb --execute --to html
+      
+      - name: Prepare public folder
+        id: folder
+        run: |
+          mkdir public
+          cp dataviz/*.html public
+          echo "name=public" >> $GITHUB_OUTPUT
+
+      - name: Generate Directory Listings
+        uses: jayanta525/github-pages-directory-listing@v2.0.0
+        with:
+          FOLDER: ${{ steps.folder.outputs.name }}
+      
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v2
+        
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: ${{ steps.folder.outputs.name }}
+  
+  deploy:
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+      
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
